@@ -1,8 +1,15 @@
 build
 parser.out
 parsetab.py
+tags
 cscope.files
+cscope.in.out
+cscope.po.out
 cscope.out
+compile_commands.json
+*.log
+logs/*
+.cache/*
 *.pyc
 *~
 .*.swp
