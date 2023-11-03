@@ -9,6 +9,7 @@ input_data=control
 
 cp_count=$(find "$run_dir_path" -type d -name 'cpt*' | wc -l)
 inst_position=$(find "$run_dir_path" -type d -name 'cpt.*' | sed 's/^.*cpt.//' | tail -n 1)
+cp_path=$(find "$folder_path" -type d -name 'cpt*' | tail -n 1)
 
 if [ "$cp_count" -eq 0 ]; then
 	cp_count=1
@@ -26,6 +27,8 @@ echo -e "\e[34mWriting benchmark stdout to $log_name\e[0m"
 echo -e "\e[91mrecover checkpoint is set to: $r_cp \e[0m"
 echo -e "\e[34mstart from: $inst_position\e[0m"
 sleep 2
+sed -i 's/switch_cpus/cpu/g' $cp_path/m5.cpt
+sleep 1
 
 build/X86/gem5.fast -d $run_dir_path configs/arch-training/spec/se.py \
 -n 1 -c $exe_path \
