@@ -65,7 +65,8 @@ class L1_ICache(L1Cache):
 
 
 class L1_DCache(L1Cache):
-    pass
+    writeback_clean = True
+    # pass
 
 
 class L2Cache(Cache):
@@ -76,6 +77,31 @@ class L2Cache(Cache):
     mshrs = 20
     tgts_per_mshr = 12
     write_buffers = 8
+    clusivity = "mostly_excl"
+    writeback_clean = True
+
+    def connectCPUSideBus(self, bus):
+        self.cpu_side = bus.mem_side_ports
+
+    def connectMemSideBus(self, bus):
+        self.mem_side = bus.cpu_side_ports
+
+
+class L3Cache(Cache):
+    assoc = 8
+    tag_latency = 20
+    data_latency = 20
+    response_latency = 20
+    mshrs = 20
+    tgts_per_mshr = 12
+    clusivity = "mostly_excl"
+    writeback_clean = False
+
+    def connectCPUSideBus(self, bus):
+        self.cpu_side = bus.mem_side_ports
+
+    def connectMemSideBus(self, bus):
+        self.mem_side = bus.cpu_side_ports
 
 
 class IOCache(Cache):
@@ -86,6 +112,7 @@ class IOCache(Cache):
     mshrs = 20
     size = "1kB"
     tgts_per_mshr = 12
+    clusivity = "mostly_excl"
 
 
 class PageTableWalkerCache(Cache):
@@ -96,6 +123,7 @@ class PageTableWalkerCache(Cache):
     mshrs = 10
     size = "1kB"
     tgts_per_mshr = 12
+    clusivity = "mostly_excl"
 
     # the x86 table walker actually writes to the table-walker cache
     if get_runtime_isa() in [ISA.X86, ISA.RISCV]:
