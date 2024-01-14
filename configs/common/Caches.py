@@ -39,8 +39,8 @@
 
 from m5.defines import buildEnv
 from m5.objects import *
+
 from gem5.isas import ISA
-from gem5.runtime import get_runtime_isa
 
 # Base implementations of L1, L2, IO and TLB-walker caches. There are
 # used in the regressions and also as base components in the
